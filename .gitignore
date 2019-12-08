@@ -227,3 +227,15 @@ dmypy.json
 .svg
 
 # End of https://www.gitignore.io/api/macos,python,pycharm
+.idea/inspectionProfiles/
+.idea/misc.xml
+.idea/modules.xml
+.idea/other.xml
+.idea/ricerca_operativa.iml
+function..svg
+function.svg
+gradient.svg
+newvenv/bin/
+newvenv/include/
+newvenv/pyvenv.cfg
+plot.svg

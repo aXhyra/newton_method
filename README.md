@@ -1,11 +1,11 @@
 newton_method
 =============
 
-##Introduction
+## Introduction
 This package contains functions to calculate the minimum of a mathematical function written as a lambda using Newton's
 gradient method (https://en.wikipedia.org/wiki/Newton%27s_method_in_optimization).
 
-##Functions
+## Functions
 This package contains the following functions:
 * df_dx(func) returns a lambda function of the partial derivative on x direction
 * df_dy(func) returns a lambda function of the partial derivative on y direction
@@ -22,24 +22,20 @@ func with its gradient if its a 2 variable function, in case it's a 2D function 
 derivative
 
 func has to be a lambda function, for example: 
-'''python
+'''py
 
     df_dx(lambda x,y: x ** 2 + y ** 2)
 '''
 
-##Installation
-####pip:
+## Installation
+#### pip:
 install this package using pip:
-'''bash
 
     pip install newton_method
-'''
-####Manual install:
+#### Manual install:
 clone this repo and run setup.py
-'''bash
  
     git clone https://github.com/aXhyra/newton_method
     cd newton_method
     pip install .
-'''
 

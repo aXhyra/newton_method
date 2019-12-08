@@ -23,7 +23,7 @@ derivative
 
 func has to be a lambda function, for example: 
 
-    df_dx(lambda x,y: x ** 2 + y ** 2)
+    newton_method.df_dx(lambda x,y: x ** 2 + y ** 2)
 
 ## Installation
 #### pip:

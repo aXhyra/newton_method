@@ -5,15 +5,11 @@ from mpl_toolkits import mplot3d
 
 
 def df_dx(func, epsilon=1e-3):
-	"""
-
-	Parameters
-	----------
-	func : object
-	"""
 	nargs = len(signature(func).parameters)
+	# 3D function
 	if nargs == 2:
 		return lambda x, y: ((func(x + epsilon, y) - func(x, y)) / epsilon)
+	# 2D function
 	if nargs == 1:
 		return lambda x: ((func(x + epsilon) - func(x)) / epsilon)
 	logging.error('Cannot work on functions with more than 2 variables')
@@ -25,8 +21,10 @@ def df_dy(func, epsilon=1e-3):
 
 def df_dxdx(func):
 	nargs = len(signature(func).parameters)
+	# 3D function
 	if nargs == 2:
 		return lambda x, y: df_dx(df_dx(func))(x, y)
+	# 2D function
 	if nargs == 1:
 		return lambda x: df_dx(df_dx(func))(x)
 	logging.error('Cannot work on functions with more than 2 variables')
@@ -45,16 +43,24 @@ def df_dydx(func):
 
 
 def grad(func):
-	return lambda x, y: np.array([df_dx(func)(x, y), df_dy(func)(x, y)])
+	nargs = len(signature(func).parameters)
+	if nargs == 2:
+		return lambda x, y: np.array([df_dx(func)(x, y), df_dy(func)(x, y)])
+	logging.error('Cannot calculate gradient, function is not 3D')
 
 
 def hess(func):
-	return lambda x, y: np.array([[df_dxdx(func)(x, y), df_dxdy(func)(x, y)],
-	                              [df_dydx(func)(x, y), df_dydy(func)(x, y)]])
+	nargs = len(signature(func).parameters)
+	if nargs == 2:
+		return lambda x, y: np.array([[df_dxdx(func)(x, y), df_dxdy(func)(x, y)],
+		                              [df_dydx(func)(x, y), df_dydy(func)(x, y)]])
+	logging.error('Cannot calculate hessian, function is not 3D')
 
 
 def newton(func, x0=(0, 0), steps=2, delta=.05):
 	nargs = len(signature(func).parameters)
+
+	# 3D function
 	if nargs == 2:
 		res = np.array([x0[0], x0[1]])
 		gradient = grad(func)
@@ -70,14 +76,15 @@ def newton(func, x0=(0, 0), steps=2, delta=.05):
 			if diff < delta:
 				break
 
+	# 2D function
 	elif nargs == 1:
 		res = x0
-		df_dx = df_dx(func)
-		df_dxdx = df_dxdx(func)
+		dx = df_dx(func)
+		dxdx = df_dxdx(func)
 
 		for i in range(steps):
 			prev = res
-			res = prev - df_dx(prev) / df_dxdx(prev)
+			res = prev - dx(prev) / dxdx(prev)
 			diff = abs(prev - res)
 			if diff < delta:
 				break
@@ -90,11 +97,12 @@ def plot(func, start=-10, end=10, bins=100, savefig=False, plotfunc=True, plotgr
 	nargs = len(signature(func).parameters)
 	x = np.linspace(start, end, bins)
 
+	# if given function is 2D
 	if nargs == 1:
 		X = np.linspace(start, end, bins)
 		Y = func(X)
-		df_dx = df_dx(func)(X)
-		df_dxdx = df_dxdx(func)(X)
+		dx = df_dx(func)(X)
+		dxdx = df_dxdx(func)(X)
 
 		fig = plt.figure(figsize=(8, 6))
 		ax = fig.add_subplot(2, 2, 1, title='f(x)')
@@ -104,11 +112,13 @@ def plot(func, start=-10, end=10, bins=100, savefig=False, plotfunc=True, plotgr
 		b = fig.add_subplot(2, 2, 2, title='f\'(x)')
 		b.set_xlabel('x')
 		b.set_ylabel('y')
-		b.plot(df_dx)
+		b.plot(dx)
 		c = fig.add_subplot(2, 2, 3, title='f\'\'(x)')
 		c.set_xlabel('x')
 		c.set_ylabel('y')
-		c.plot(df_dxdx)
+		c.plot(dxdx)
+
+	# 3D function
 	elif nargs == 2:
 		y = np.linspace(start, end, bins)
 
@@ -119,25 +129,27 @@ def plot(func, start=-10, end=10, bins=100, savefig=False, plotfunc=True, plotgr
 
 		fig = plt.figure(figsize=(8, 6))
 		if plotfunc and plotgrad:
-			ax = fig.add_subplot(1, 2, 1, projection='3d', title='f(x,y)', adjustable='box',
-			                     aspect=1)
+			ax = fig.add_subplot(1, 2, 1, projection='3d', title='f(x,y)', adjustable='box', aspect=1)
 			ax.contour3D(X, Y, Z, 50, cmap='binary')
 			ax.set_xlabel('x')
 			ax.set_ylabel('y')
 			ax.set_zlabel('z')
 			b = fig.add_subplot(1, 2, 2, title='gradient', adjustable='box', aspect=1)
 			b.quiver(X, Y, gd[0], gd[1])
+
 		elif plotfunc:
-			ax = fig.add_subplot(1, 1, 1, projection='3d', title='f(x,y)', adjustable='box',
-			                     aspect=1)
+			ax = fig.add_subplot(1, 1, 1, projection='3d', title='f(x,y)', adjustable='box', aspect=1)
 			ax.contour3D(X, Y, Z, 50, cmap='binary')
 			ax.set_xlabel('x')
 			ax.set_ylabel('y')
 			ax.set_zlabel('z')
+
 		elif plotgrad:
 			b = fig.add_subplot(1, 1, 1, title='gradient', adjustable='box', aspect=1)
 			b.quiver(X, Y, gd[0], gd[1])
+
 	plt.show()
+
 	if savefig and plotfunc or plotgrad:
 		if plotfunc and plotgrad:
 			filename = 'plot'
@@ -145,6 +157,7 @@ def plot(func, start=-10, end=10, bins=100, savefig=False, plotfunc=True, plotgr
 			filename = 'function'
 		elif plotgrad:
 			filename = 'gradient'
+
 		logging.info('saving plot as svg...')
 		fig.savefig(filename + '.svg')
 

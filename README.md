@@ -22,10 +22,8 @@ func with its gradient if its a 2 variable function, in case it's a 2D function 
 derivative
 
 func has to be a lambda function, for example: 
-'''py
 
     df_dx(lambda x,y: x ** 2 + y ** 2)
-'''
 
 ## Installation
 #### pip:

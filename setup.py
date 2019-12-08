@@ -8,7 +8,7 @@ setup(name='newton_method',
       author='Alind Xhyra',
       author_email='xhyra.alind@gmail.com',
       url='https://github.com/aXhyra/newton_method',
-      download_url='https://github.com/aXhyra/newton_method/archive/v0.1-alpha.tar.gz',
+      download_url='https://github.com/aXhyra/newton_method/archive/v0.1.1-alpha.tar.gz',
       packages=['newton_method'],
       install_requires=['matplotlib', 'numpy']
       )

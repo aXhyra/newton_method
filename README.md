@@ -31,7 +31,7 @@ install this package using pip:
 
     pip install newton_method
 #### Manual install:
-clone this repo and run setup.py
+clone this repo and run setup.py:
  
     git clone https://github.com/aXhyra/newton_method
     cd newton_method

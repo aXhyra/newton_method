@@ -22,10 +22,8 @@ func with its gradient if its a 2 variable function, in case it's a 2D function 
 derivative
 
 func has to be a lambda function, for example: 
-'''py
 
     df_dx(lambda x,y: x ** 2 + y ** 2)
-'''
 
 ## Installation
 #### pip:
@@ -33,7 +31,7 @@ install this package using pip:
 
     pip install newton_method
 #### Manual install:
-clone this repo and run setup.py
+clone this repo and run setup.py:
  
     git clone https://github.com/aXhyra/newton_method
     cd newton_method

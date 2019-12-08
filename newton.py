@@ -136,7 +136,7 @@ def plot(func, start=-10, end=10, bins=100, savefig=False, plotfunc=True, plotgr
 		if plotfunc and plotgrad:
 			filename = 'plot'
 		elif plotfunc:
-			filename = 'function.'
+			filename = 'function'
 		elif plotgrad:
 			filename = 'gradient'
 		logging.info('saving plot as svg...')

@@ -223,4 +223,7 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
+# SVGs
+.svg
+
 # End of https://www.gitignore.io/api/macos,python,pycharm
